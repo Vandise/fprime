@@ -1,0 +1,9 @@
+.DS_Store
+bin/
+obj/
+test.debug
+src/frontend/lexer.yy.cpp
+src/frontend/parser.output
+src/frontend/parser.tab.cpp
+src/frontend/parser.tab.hpp
+src/frontend/stack.hh
