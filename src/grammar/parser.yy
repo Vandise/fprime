@@ -26,7 +26,7 @@
 }
 
 %token    <sval>  STRING
-
+%token            NEWLINE 
 %token            PRGEND 0     "end of file"
 
 %destructor { if ($$)  { delete ($$); ($$) = nullptr; } } <sval>
@@ -48,9 +48,22 @@
 %%
 
 Expressions:
-  STRING    {
-              std::cout << "Found String: " << *$1 << std::endl;
-            }
+  Expression                          {}
+  | Expressions Terminator Expression {}
+  |                                   {}
+  | Expressions Terminator            {}
+  ;
+
+Expression:
+  Literal
+  ;
+
+Literal:
+  STRING      { std::cout << "Found String " << *$1 << std::endl; }
+  ;
+
+Terminator:
+  NEWLINE
   ;
 %%
 
