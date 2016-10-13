@@ -2,6 +2,7 @@
 #include <fstream>
 #include <cassert>
 #include "headers/driver.hpp"
+#include "util/debug_new/debug_new.h"
 
 FrontEnd::Driver::~Driver()
 {

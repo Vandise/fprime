@@ -3,14 +3,17 @@
 
 #if ! defined(yyFlexLexerOnce)
 #include <FlexLexer.h>
+#include <fstream>
 #endif
 
 #include "parser.tab.hpp"
 #include "location.hh"
+#include "util/debug_new/debug_new.h"
 
 typedef struct file_map {
   file_map *previous;
   file_map *next;
+  std::ifstream *fp;
   std::string filename;
   int line;
   int column;
@@ -26,7 +29,7 @@ namespace FrontEnd {
       Scanner(std::istream *in, std::string filename) : yyFlexLexer(in)
       {
         loc = new FrontEnd::Parser::location_type();
-        fmap = { nullptr, nullptr, filename, 1, 1, 1 };
+        fmap = { nullptr, nullptr, nullptr, filename, 1, 1, 1 };
         current_file = &fmap;
       };
 

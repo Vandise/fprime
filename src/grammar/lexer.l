@@ -6,6 +6,7 @@
 #include <fstream>
 #include <string>
 #include "frontend/scanner.hpp"
+#include "util/debug_new/debug_new.h"
 
 #undef  YY_DECL
 #define YY_DECL int FrontEnd::Scanner::yylex( FrontEnd::Parser::semantic_type * const lval, FrontEnd::Parser::location_type *loc ) 
@@ -23,8 +24,6 @@ using token = FrontEnd::Parser::token;
           current_file->column += yyleng;                                 \
         }                                                                 \
         loc->begin.line = loc->end.line = current_file->line;
-
-std::ifstream *file = new std::ifstream;
 
 %}
 
@@ -64,20 +63,24 @@ import              BEGIN(incl);
 
 <incl>[ \t]*        /* skip whitespace */
 <incl>[^ \t\n]+     {
-                      file->open(yytext);
-                      yyin = file;
-                      if (!yyin || !file->is_open())
-                      {
-                        std::cout << "Error: Unable to import file " << yytext << std::endl;
-                        exit(1);
-                      }
 
                       current_file->next = new file_map();
                       current_file->next->previous = current_file;
                       current_file->next->filename = std::string(yytext);
+
                       current_file = current_file->next;
                       current_file->line   = 1;
                       current_file->column = 1;
+                      current_file->fp = new std::ifstream();
+
+                      current_file->fp->open(yytext);
+                      yyin = current_file->fp;
+
+                      if (!yyin || !current_file->fp->is_open())
+                      {
+                        std::cout << "Error: Unable to import file " << yytext << std::endl;
+                        exit(1);
+                      }
 
                       *loc->begin.filename = current_file->filename;
 
@@ -85,19 +88,26 @@ import              BEGIN(incl);
                       BEGIN(INITIAL);
                     }
 <<EOF>>             {
-     			            yypop_buffer_state();
-
-     			            if (current_file->next != nullptr) delete current_file->next;
-     			            if (current_file->previous != nullptr) {
+                      yypop_buffer_state();
+                      
+                      if (current_file->next != nullptr) {
+                        delete current_file->next;
+                        current_file->next = nullptr;
+                      }
+                      if (current_file->fp != nullptr) {
+                        current_file->fp->close();
+                        delete current_file->fp;
+                        current_file->fp = nullptr;
+                      }
+                      if (current_file->previous != nullptr) {
                         current_file = current_file->previous;
                         delete current_file->next;
+                        current_file->next = nullptr;
                       }
 
                       *loc->begin.filename = current_file->filename;
                       if ( !YY_CURRENT_BUFFER )
                       {
-                        file->close();
-                        delete file;
                         yyterminate();
                       }
                      }
