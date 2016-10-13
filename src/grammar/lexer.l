@@ -2,20 +2,27 @@
 %{
 
 #include <algorithm>
-#include <string>
 #include <iostream>
 #include <fstream>
+#include <string>
 #include "frontend/scanner.hpp"
 
-typedef FrontEnd::Parser::token token;
-bool term = false;
+#undef  YY_DECL
+#define YY_DECL int FrontEnd::Scanner::yylex( FrontEnd::Parser::semantic_type * const lval, FrontEnd::Parser::location_type *loc ) 
+
+using token = FrontEnd::Parser::token;
 
 #define T_STRING( s ) ( new std::string(s) )
-#define STRIP_QUOTES( s ) ( s->erase(remove(s->begin(), s->end(), '\"'), s->end()) )
-#define yyterminate() return (term = !term)?Parser::token::PRGEND : YY_NULL
 #define YY_NO_UNISTD_H
-#define MAX_INCLUDE_DEPTH 10
-YY_BUFFER_STATE include_stack[MAX_INCLUDE_DEPTH];
+#define YY_USER_ACTION loc->step(); loc->columns(yyleng);                 \
+        if (current_file->previous != nullptr) {                          \
+          current_file->column += yyleng;                                 \
+        }                                                                 \
+        else                                                              \
+        {                                                                 \
+          current_file->column += yyleng;                                 \
+        }                                                                 \
+        loc->begin.line = loc->end.line = current_file->line;
 
 std::ifstream *file = new std::ifstream;
 
@@ -34,19 +41,28 @@ float_num ({digit}+\.{digit}+)
 
 %%
 
+%{
+  yylval = lval;
+%}
+
 import              BEGIN(incl);
 
-\n                  { 
-                      return( token::NEWLINE );   
+\n                  {
+                      current_file->line += 1;
+                      return( token::T_NEWLINE );   
                     }
-[\ \t]+
+[\ \t]+             
 \"[^"]*\"           {
-                      yylval->sval = T_STRING(yytext);
-                      yylval->sval->erase(remove(yylval->sval->begin(), yylval->sval->end(), '\"' ), yylval->sval->end());
-                      return(token::STRING);
+                      yylval->build< std::string >( yytext );
+                      return(token::T_STRING);
                     }
+{integer}           {
+                      yylval->build< int >( atoi(yytext) );
+                      return( token::T_INTEGER );
+                    }
+.                   { }
 
-<incl>[ \t]* /* skip whitespace */
+<incl>[ \t]*        /* skip whitespace */
 <incl>[^ \t\n]+     {
                       file->open(yytext);
                       yyin = file;
@@ -55,12 +71,29 @@ import              BEGIN(incl);
                         std::cout << "Error: Unable to import file " << yytext << std::endl;
                         exit(1);
                       }
+
+                      current_file->next = new file_map();
+                      current_file->next->previous = current_file;
+                      current_file->next->filename = std::string(yytext);
+                      current_file = current_file->next;
+                      current_file->line   = 1;
+                      current_file->column = 1;
+
+                      *loc->begin.filename = current_file->filename;
+
                       yypush_buffer_state(yy_create_buffer( yyin, YY_BUF_SIZE ));
                       BEGIN(INITIAL);
                     }
 <<EOF>>             {
      			            yypop_buffer_state();
-     
+
+     			            if (current_file->next != nullptr) delete current_file->next;
+     			            if (current_file->previous != nullptr) {
+                        current_file = current_file->previous;
+                        delete current_file->next;
+                      }
+
+                      *loc->begin.filename = current_file->filename;
                       if ( !YY_CURRENT_BUFFER )
                       {
                         file->close();
@@ -68,4 +101,5 @@ import              BEGIN(incl);
                         yyterminate();
                       }
                      }
+
 %%

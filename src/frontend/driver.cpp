@@ -1,7 +1,6 @@
 #include <cctype>
 #include <fstream>
 #include <cassert>
-
 #include "headers/driver.hpp"
 
 FrontEnd::Driver::~Driver()
@@ -15,6 +14,7 @@ FrontEnd::Driver::~Driver()
 void
 FrontEnd::Driver::parse( const char *const filename )
 {
+  file = std::string(filename);
   assert(filename != nullptr);
   std::ifstream in_file( filename );
   if( !in_file.good() ) exit( EXIT_FAILURE );
@@ -22,7 +22,7 @@ FrontEnd::Driver::parse( const char *const filename )
   delete(scanner);
   try
   {
-    scanner = new FrontEnd::Scanner( &in_file );
+    scanner = new FrontEnd::Scanner( &in_file, file);
   }
   catch( std::bad_alloc &ba )
   {
@@ -46,4 +46,3 @@ FrontEnd::Driver::parse( const char *const filename )
 
   parser->parse();
 }
-

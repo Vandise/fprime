@@ -1,14 +1,15 @@
 %skeleton "lalr1.cc"
 %require  "3.0"
-%defines 
+%debug 
+%defines
+%error-verbose
 %define api.namespace {FrontEnd}
 %define parser_class_name {Parser}
-%define parse.trace
 
 %code requires {
   namespace FrontEnd {
-    class Scanner;
     class Driver;
+    class Scanner;
   }
 }
 
@@ -17,33 +18,30 @@
 
 %code {
 
-  #include <iostream>
-  #include <cstdlib>
-  #include "frontend/headers/driver.hpp"
+#include <iostream>
+#include <cstdlib>
+#include <fstream>
 
-  #undef yylex
-  #define yylex scanner.yylex
+#include "frontend/headers/driver.hpp"
+
+#undef yylex
+#define yylex scanner.yylex
+
 }
 
-%token    <sval>  STRING
-%token            NEWLINE 
-%token            PRGEND 0     "end of file"
+%define parse.assert
+%define api.value.type variant
 
-%destructor { if ($$)  { delete ($$); ($$) = nullptr; } } <sval>
+%token    <std::string>  T_STRING
+%token    <int>          T_INTEGER
+%token                   T_NEWLINE 
+%token                   PRGEND 0     "end of file"
 
-%left  DOT
-%right "!"
-%left  MULT DIV
-%left  PLUS MINUS
-%left  GT GE LT LE
-%left  EQ "!="
-%left  "&&"
-%left  "||"
-%left  COMMA
 
-%union {
-  std::string                        *sval;
-}
+%locations
+%initial-action {
+    @$.begin.filename = @$.end.filename = &driver.file;
+};
 
 %%
 
@@ -59,16 +57,43 @@ Expression:
   ;
 
 Literal:
-  STRING      { std::cout << "Found String " << *$1 << std::endl; }
+  T_STRING { std::cout << "Found String: " << $1 << std::endl; }
   ;
 
 Terminator:
-  NEWLINE
+  T_NEWLINE
   ;
 %%
 
 void
-FrontEnd::Parser::error(const std::string &err_message )
+FrontEnd::Parser::error(const location_type& l, const std::string& m )
 {
-  std::cerr << "Error: " << err_message << std::endl;
+  std::ifstream error_file (*l.begin.filename);
+  std::string line;
+  int line_number = 1;
+  int chars_read = 0;
+
+  if (error_file) {
+    std::cout << std::endl << "-- ERROR -------------------------------------- " << std::endl << std::endl;
+    std::cout << *l.begin.filename << std::endl;
+
+    while(getline(error_file, line)) {
+
+      chars_read += line.length();
+      if (line_number >= l.begin.line - 5 || line_number <= l.begin.line + 5) {
+
+        std::cout << "    " << line_number << ": " << line << std::endl;
+
+        if (line_number == l.begin.line) {
+
+          std::cout << " >> " << m << std::endl << std::endl;
+        }
+
+      }
+      line_number++;
+    }
+
+  }
+
 }
+

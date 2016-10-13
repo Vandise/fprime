@@ -5,17 +5,16 @@
 #include "frontend/parser.tab.hpp"
 
 namespace FrontEnd {
-
   class Driver {
     public:
       Driver() = default;
       virtual ~Driver();
       void parse( const char *filename );
+      std::string file;
     private:
       FrontEnd::Parser  *parser  = nullptr;
       FrontEnd::Scanner *scanner = nullptr;
   };
-
 }
 
 #endif
