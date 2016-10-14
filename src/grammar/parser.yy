@@ -76,9 +76,14 @@ FrontEnd::Parser::error(const location_type& l, const std::string& m )
   int chars_read = 0;
 
   if (error_file) {
+
     std::cout << std::endl << "-- ERROR " << std::endl;
     std::cout << std::endl << " " << m << " on line " << l.begin.line << " in file: " << *l.begin.filename << std::endl << std::endl;
     std::cout << "-- SOURCE " << std::endl << std::endl;
+
+    //
+    // Source Tracking
+    //
 
     while(getline(error_file, line)) {
 
@@ -110,6 +115,11 @@ FrontEnd::Parser::error(const location_type& l, const std::string& m )
 
     error_file.close();
 
+
+    //
+    // File Trace
+    //
+
     std::cout << std::endl << "-- TRACE " << std::endl << std::endl;
 
     while(scanner.current_file->previous != nullptr) {
@@ -117,7 +127,7 @@ FrontEnd::Parser::error(const location_type& l, const std::string& m )
     }
 
     int j = 1;
-    
+
     while(scanner.current_file != nullptr) {
       std::string trace = "";
       trace.assign(j*2, ' ');
