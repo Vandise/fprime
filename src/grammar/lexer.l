@@ -50,6 +50,13 @@ import              BEGIN(incl);
                       current_file->line += 1;
                       return( token::T_NEWLINE );   
                     }
+"int"               {  yylval->build< int >( INTEGER ); return( token::T_INT ); }
+
+[_a-zA-Z\\?\\!]+    {
+                      yylval->build< std::string >( yytext );
+                      return( token::T_IDENTIFIER );
+                    }  
+
 [\ \t]+             
 \"[^"]*\"           {
                       yylval->build< std::string >( yytext );
@@ -78,8 +85,8 @@ import              BEGIN(incl);
 
                       if (!yyin || !current_file->fp->is_open())
                       {
-                        std::cout << "Error: Unable to import file " << yytext << std::endl;
-                        exit(1);
+                        yylval->build< std::string >( "Unable to import file " + std::string(yytext) );
+                        return( token::T_FATAL_ERROR );
                       }
 
                       *loc->begin.filename = current_file->filename;
@@ -89,7 +96,7 @@ import              BEGIN(incl);
                     }
 <<EOF>>             {
                       yypop_buffer_state();
-                      
+
                       if (current_file->next != nullptr) {
                         delete current_file->next;
                         current_file->next = nullptr;

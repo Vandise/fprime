@@ -1,16 +1,20 @@
 %skeleton "lalr1.cc"
 %require  "3.0"
-%debug 
+%debug
 %defines
 %error-verbose
 %define api.namespace {FrontEnd}
 %define parser_class_name {Parser}
 
 %code requires {
+
+#include "common/fprime.h"
+
   namespace FrontEnd {
     class Driver;
     class Scanner;
   }
+
 }
 
 %parse-param { Scanner  &scanner  }
@@ -34,9 +38,19 @@
 %define parse.assert
 %define api.value.type variant
 
+/* def */
+%token    <std::string>  T_IDENTIFIER
+
+/* literals */
 %token    <std::string>  T_STRING
 %token    <int>          T_INTEGER
-%token                   T_NEWLINE 
+
+/* types */
+%token    <int>          T_INT
+
+/* misc */
+%token    <std::string>  T_FATAL_ERROR
+%token                   T_NEWLINE
 %token                   PRGEND 0     "end of file"
 
 
@@ -44,6 +58,9 @@
 %initial-action {
     @$.begin.filename = @$.end.filename = &driver.file;
 };
+
+%type <int>         DataTypes
+%type <std::string> Errors
 
 %%
 
@@ -55,11 +72,25 @@ Expressions:
   ;
 
 Expression:
-  Literal
+    Literal
+  | SetLocal
+  | Errors
   ;
 
 Literal:
   T_STRING { std::cout << "Found String: " << $1 << std::endl; }
+  ;
+
+SetLocal:
+    DataTypes T_IDENTIFIER { std::cout << "Setting Identifier: " << $2 << " with type: " << $1 << std::endl; }
+  ;
+
+Errors:
+    T_FATAL_ERROR { error(yyla.location, $1); YYABORT; }
+  ;
+
+DataTypes:
+    T_INT   { $$ = $1; }
   ;
 
 Terminator:

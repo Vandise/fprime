@@ -40,7 +40,7 @@ FrontEnd::Driver::parse( const char *const filename )
   }
   catch( std::bad_alloc &ba )
   {
-    std::cerr << "Failed to allocate parser: (" << 
+    std::cerr << "Failed to allocate parser: (" <<
       ba.what() << "), exiting!!\n";
     exit( EXIT_FAILURE );
   }
