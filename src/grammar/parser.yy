@@ -46,7 +46,16 @@
 %token    <int>          T_INTEGER
 
 /* types */
-%token    <int>          T_INT
+%token    <int>          T_TYPE_BYTE
+%token    <int>          T_TYPE_BOOLEAN
+%token    <int>          T_TYPE_INT_8
+%token    <int>          T_TYPE_INT_16
+%token    <int>          T_TYPE_INT_32
+%token    <int>          T_TYPE_INT_64
+%token    <int>          T_TYPE_INTEGER
+%token    <int>          T_TYPE_FLOAT
+%token    <int>          T_TYPE_DOUBLE
+%token    <int>          T_TYPE_STRING
 
 /* misc */
 %token    <std::string>  T_FATAL_ERROR
@@ -78,7 +87,8 @@ Expression:
   ;
 
 Literal:
-  T_STRING { std::cout << "Found String: " << $1 << std::endl; }
+    T_STRING  { std::cout << "Found String: "  << $1 << std::endl; }
+  | T_INTEGER { std::cout << "Found Integer: " << $1 << std::endl; }
   ;
 
 SetLocal:
@@ -90,7 +100,16 @@ Errors:
   ;
 
 DataTypes:
-    T_INT   { $$ = $1; }
+    T_TYPE_BYTE
+  | T_TYPE_BOOLEAN
+  | T_TYPE_INT_8
+  | T_TYPE_INT_16
+  | T_TYPE_INT_32
+  | T_TYPE_INT_64
+  | T_TYPE_INTEGER
+  | T_TYPE_FLOAT
+  | T_TYPE_DOUBLE
+  | T_TYPE_STRING   { $$ = $1; }
   ;
 
 Terminator:

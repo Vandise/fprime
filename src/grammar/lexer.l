@@ -50,7 +50,17 @@ import              BEGIN(incl);
                       current_file->line += 1;
                       return( token::T_NEWLINE );   
                     }
-"int"               {  yylval->build< int >( INTEGER ); return( token::T_INT ); }
+
+"byte"              {  yylval->build< int >( BYTE );    return( token::T_TYPE_BYTE );    }
+"bool"              {  yylval->build< int >( BOOLEAN ); return( token::T_TYPE_BOOLEAN ); }
+"int_8"             {  yylval->build< int >( INT_8 );   return( token::T_TYPE_INT_8 );   }
+"int_16"            {  yylval->build< int >( INT_16 );  return( token::T_TYPE_INT_16 );  }
+"int_32"            {  yylval->build< int >( INT_32 );  return( token::T_TYPE_INT_32 );  }
+"int_64"            {  yylval->build< int >( INT_64 );  return( token::T_TYPE_INT_64 );  }
+"int"               {  yylval->build< int >( INTEGER ); return( token::T_TYPE_INTEGER ); }
+"float"             {  yylval->build< int >( FLOAT );   return( token::T_TYPE_FLOAT );   }
+"decimal"           {  yylval->build< int >( DOUBLE );  return( token::T_TYPE_DOUBLE );  }
+"string"            {  yylval->build< int >( STRING );  return( token::T_TYPE_STRING );  }
 
 [_a-zA-Z\\?\\!]+    {
                       yylval->build< std::string >( yytext );

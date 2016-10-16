@@ -2,7 +2,26 @@
 #define __FPRIME_HPP__ 1
 
 enum FDataType {
-  INTEGER
+  UNDEFINED,
+
+/* SPECIAL TYPES */
+  BYTE,
+  BOOLEAN,
+
+/* DEFAULT BEHAVIOR INTEGERS */
+  INT_8,                     // same as BYTE 
+  INT_16,
+  INT_32,
+  INT_64,
+  INTEGER,
+
+/* DECIMALS */
+  FLOAT,
+  DOUBLE,
+
+/* STRINGS */
+  CHAR,
+  STRING
 };
 
 #endif
