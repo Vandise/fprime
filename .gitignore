@@ -7,3 +7,5 @@ src/frontend/parser.output
 src/frontend/parser.tab.cpp
 src/frontend/parser.tab.hpp
 src/frontend/stack.hh
+src/frontend/location.hh
+src/frontend/position.hh
