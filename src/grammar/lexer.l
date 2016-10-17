@@ -62,9 +62,12 @@ import              BEGIN(incl);
 "decimal"           {  yylval->build< int >( DOUBLE );  return( token::T_TYPE_DOUBLE );  }
 "string"            {  yylval->build< int >( STRING );  return( token::T_TYPE_STRING );  }
 
+"struct"            { return ( token::T_STRUCT );        }
 "*"                 { return ( token::T_ASTERISK );      }
 "["                 { return ( token::T_OPEN_BRACKET );  }
 "]"                 { return ( token::T_CLOSE_BRACKET ); }
+"{"                 { return ( token::T_OPEN_BRACE );    }
+"}"                 { return ( token::T_CLOSE_BRACE );   }
 
 [_a-zA-Z\\?\\!]+    {
                       yylval->build< std::string >( yytext );

@@ -61,7 +61,10 @@
 /* misc */
 %token                   T_OPEN_BRACKET
 %token                   T_CLOSE_BRACKET
+%token                   T_OPEN_BRACE
+%token                   T_CLOSE_BRACE
 %token                   T_ASTERISK
+%token                   T_STRUCT
 %token    <std::string>  T_FATAL_ERROR
 %token                   T_NEWLINE
 %token                   PRGEND 0     "end of file"
@@ -87,6 +90,7 @@ Expressions:
 Expression:
     Literal
   | Initialize
+  | Structs
   | Errors
   ;
 
@@ -121,6 +125,20 @@ DataTypes:
   | T_TYPE_FLOAT     { $$ = $1; }
   | T_TYPE_DOUBLE    { $$ = $1; }
   | T_TYPE_STRING    { $$ = $1; }
+  ;
+
+Structs:
+    T_STRUCT T_IDENTIFIER T_OPEN_BRACE
+      StructInitializers
+    T_CLOSE_BRACE
+                  { std::cout << "Structure definition: " << $2 << std::endl; }
+  ;
+
+StructInitializers:
+    Initialize                                {}
+  | StructInitializers Terminator Initialize  {}
+  |                                           { /* error(yyla.location, "Struct cannot have empty body definition"); YYABORT; */ }
+  | StructInitializers Terminator             {}
   ;
 
 Terminator:
