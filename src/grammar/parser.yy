@@ -61,6 +61,7 @@
 /* misc */
 %token                   T_OPEN_BRACKET
 %token                   T_CLOSE_BRACKET
+%token                   T_ASTERISK
 %token    <std::string>  T_FATAL_ERROR
 %token                   T_NEWLINE
 %token                   PRGEND 0     "end of file"
@@ -97,6 +98,8 @@ Literal:
 Initialize:
     DataTypes T_IDENTIFIER
       { std::cout << "Setting Identifier: " << $2 << " with type: " << $1 << std::endl; }
+  | DataTypes T_ASTERISK T_IDENTIFIER
+      { std::cout << "Setting Identifier: " << $3 << " pointer: " << POINTER << " type: " << $1 << std::endl; }
   | DataTypes T_OPEN_BRACKET T_CLOSE_BRACKET T_IDENTIFIER
       { std::cout << "Setting Identifier: " << $4 << " with type: " << ARRAY << " Only: " << $1 << std::endl; }
   | DataTypes T_OPEN_BRACKET T_INTEGER T_CLOSE_BRACKET T_IDENTIFIER

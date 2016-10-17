@@ -62,6 +62,7 @@ import              BEGIN(incl);
 "decimal"           {  yylval->build< int >( DOUBLE );  return( token::T_TYPE_DOUBLE );  }
 "string"            {  yylval->build< int >( STRING );  return( token::T_TYPE_STRING );  }
 
+"*"                 { return ( token::T_ASTERISK );      }
 "["                 { return ( token::T_OPEN_BRACKET );  }
 "]"                 { return ( token::T_CLOSE_BRACKET ); }
 

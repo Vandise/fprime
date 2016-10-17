@@ -7,6 +7,7 @@ enum FDataType {
 /* SPECIAL TYPES */
   BYTE,
   BOOLEAN,
+  POINTER,
 
 /* DEFAULT BEHAVIOR INTEGERS */
   INT_8,                     // same as BYTE 
