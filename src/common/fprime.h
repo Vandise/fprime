@@ -21,7 +21,11 @@ enum FDataType {
 
 /* STRINGS */
   CHAR,
-  STRING
+  STRING,
+
+/* ITERABLE */
+  ARRAY
+
 };
 
 #endif

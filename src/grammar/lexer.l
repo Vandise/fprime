@@ -62,6 +62,9 @@ import              BEGIN(incl);
 "decimal"           {  yylval->build< int >( DOUBLE );  return( token::T_TYPE_DOUBLE );  }
 "string"            {  yylval->build< int >( STRING );  return( token::T_TYPE_STRING );  }
 
+"["                 { return ( token::T_OPEN_BRACKET );  }
+"]"                 { return ( token::T_CLOSE_BRACKET ); }
+
 [_a-zA-Z\\?\\!]+    {
                       yylval->build< std::string >( yytext );
                       return( token::T_IDENTIFIER );

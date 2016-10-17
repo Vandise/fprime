@@ -56,8 +56,11 @@
 %token    <int>          T_TYPE_FLOAT
 %token    <int>          T_TYPE_DOUBLE
 %token    <int>          T_TYPE_STRING
+%token    <int>          T_TYPE_ARRAY
 
 /* misc */
+%token                   T_OPEN_BRACKET
+%token                   T_CLOSE_BRACKET
 %token    <std::string>  T_FATAL_ERROR
 %token                   T_NEWLINE
 %token                   PRGEND 0     "end of file"
@@ -82,7 +85,7 @@ Expressions:
 
 Expression:
     Literal
-  | SetLocal
+  | Initialize
   | Errors
   ;
 
@@ -91,8 +94,13 @@ Literal:
   | T_INTEGER { std::cout << "Found Integer: " << $1 << std::endl; }
   ;
 
-SetLocal:
-    DataTypes T_IDENTIFIER { std::cout << "Setting Identifier: " << $2 << " with type: " << $1 << std::endl; }
+Initialize:
+    DataTypes T_IDENTIFIER
+      { std::cout << "Setting Identifier: " << $2 << " with type: " << $1 << std::endl; }
+  | DataTypes T_OPEN_BRACKET T_CLOSE_BRACKET T_IDENTIFIER
+      { std::cout << "Setting Identifier: " << $4 << " with type: " << ARRAY << " Only: " << $1 << std::endl; }
+  | DataTypes T_OPEN_BRACKET T_INTEGER T_CLOSE_BRACKET T_IDENTIFIER
+      { std::cout << "Setting Identifier: " << $5 << " with type: " << ARRAY << " Only: " << $1 << " Fixed Size: " << $3 << std::endl; }
   ;
 
 Errors:
@@ -100,16 +108,16 @@ Errors:
   ;
 
 DataTypes:
-    T_TYPE_BYTE
-  | T_TYPE_BOOLEAN
-  | T_TYPE_INT_8
-  | T_TYPE_INT_16
-  | T_TYPE_INT_32
-  | T_TYPE_INT_64
-  | T_TYPE_INTEGER
-  | T_TYPE_FLOAT
-  | T_TYPE_DOUBLE
-  | T_TYPE_STRING   { $$ = $1; }
+    T_TYPE_BYTE      { $$ = $1; }
+  | T_TYPE_BOOLEAN   { $$ = $1; }
+  | T_TYPE_INT_8     { $$ = $1; }
+  | T_TYPE_INT_16    { $$ = $1; }
+  | T_TYPE_INT_32    { $$ = $1; }
+  | T_TYPE_INT_64    { $$ = $1; }
+  | T_TYPE_INTEGER   { $$ = $1; }
+  | T_TYPE_FLOAT     { $$ = $1; }
+  | T_TYPE_DOUBLE    { $$ = $1; }
+  | T_TYPE_STRING    { $$ = $1; }
   ;
 
 Terminator:
