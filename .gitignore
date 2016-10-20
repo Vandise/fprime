@@ -2,6 +2,9 @@
 bin/
 obj/
 test.debug
+*.swp
+*.swo
+*.log
 src/frontend/lexer.yy.cpp
 src/frontend/parser.output
 src/frontend/parser.tab.cpp

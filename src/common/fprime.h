@@ -2,7 +2,7 @@
 #define __FPRIME_HPP__ 1
 
 enum FDataType {
-  UNDEFINED,
+  VOID,
 
 /* SPECIAL TYPES */
   BYTE,

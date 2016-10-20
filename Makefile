@@ -54,6 +54,11 @@ clean:
 	$(RM) -rf $(BUILDDIR)
 	$(RM) -rf $(TARGETDIR)
 
+#Clean only Objecst
+watch: $(SRCDIR)
+	@fswatch -o $^/*.cpp | xargs -I{} make 
+
+
 #Full Clean, Objects and Binaries
 cleaner: clean
 	$(RM) -rf $(TARGETDIR)

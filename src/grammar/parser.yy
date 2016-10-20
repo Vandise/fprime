@@ -57,14 +57,21 @@
 %token    <int>          T_TYPE_DOUBLE
 %token    <int>          T_TYPE_STRING
 %token    <int>          T_TYPE_ARRAY
+%token    <int>          T_TYPE_VOID
+
+%token                   T_FUNCTION
+%token                   T_END
 
 /* misc */
+%token                   T_OPEN_PAREN
+%token                   T_CLOSE_PAREN
 %token                   T_OPEN_BRACKET
 %token                   T_CLOSE_BRACKET
 %token                   T_OPEN_BRACE
 %token                   T_CLOSE_BRACE
 %token                   T_ASTERISK
 %token                   T_STRUCT
+%token                   T_EQUAL
 %token    <std::string>  T_FATAL_ERROR
 %token                   T_NEWLINE
 %token                   PRGEND 0     "end of file"
@@ -90,7 +97,9 @@ Expressions:
 Expression:
     Literal
   | Initialize
-  | Structs
+  | Assignment
+  | Struct
+  | Function
   | Errors
   ;
 
@@ -110,6 +119,10 @@ Initialize:
       { std::cout << "Setting Identifier: " << $5 << " with type: " << ARRAY << " Only: " << $1 << " Fixed Size: " << $3 << std::endl; }
   ;
 
+Assignment:
+    Initialize T_EQUAL Expression { std::cout << "Assigning variable with a type" << std::endl; }
+  ;
+
 Errors:
     T_FATAL_ERROR { error(yyla.location, $1); YYABORT; }
   ;
@@ -125,9 +138,10 @@ DataTypes:
   | T_TYPE_FLOAT     { $$ = $1; }
   | T_TYPE_DOUBLE    { $$ = $1; }
   | T_TYPE_STRING    { $$ = $1; }
+  | T_TYPE_VOID      { $$ = $1; }
   ;
 
-Structs:
+Struct:
     T_STRUCT T_IDENTIFIER T_OPEN_BRACE
       StructInitializers
     T_CLOSE_BRACE
@@ -139,6 +153,13 @@ StructInitializers:
   | StructInitializers Terminator Initialize  {}
   |                                           { /* error(yyla.location, "Struct cannot have empty body definition"); YYABORT; */ }
   | StructInitializers Terminator             {}
+  ;
+
+Function:
+    DataTypes T_IDENTIFIER T_OPEN_PAREN T_CLOSE_PAREN
+      Expressions
+    T_END
+          { std::cout << "Creating function: " << $2 << std::endl; }
   ;
 
 Terminator:

@@ -61,6 +61,9 @@ import              BEGIN(incl);
 "float"             {  yylval->build< int >( FLOAT );   return( token::T_TYPE_FLOAT );   }
 "decimal"           {  yylval->build< int >( DOUBLE );  return( token::T_TYPE_DOUBLE );  }
 "string"            {  yylval->build< int >( STRING );  return( token::T_TYPE_STRING );  }
+"void"              {  yylval->build< int >( VOID );    return ( token::T_TYPE_VOID );   }
+"func"              {  return ( token::T_FUNCTION );                                     }
+"end"               {  return ( token::T_END );                                          }
 
 "struct"            { return ( token::T_STRUCT );        }
 "*"                 { return ( token::T_ASTERISK );      }
@@ -68,6 +71,9 @@ import              BEGIN(incl);
 "]"                 { return ( token::T_CLOSE_BRACKET ); }
 "{"                 { return ( token::T_OPEN_BRACE );    }
 "}"                 { return ( token::T_CLOSE_BRACE );   }
+"("                 { return ( token::T_OPEN_PAREN );  }
+")"                 { return ( token::T_CLOSE_PAREN ); }
+"="                 { return ( token::T_EQUAL );   }
 
 [_a-zA-Z\\?\\!]+    {
                       yylval->build< std::string >( yytext );
