@@ -1,4 +1,8 @@
 #pragma once
+
+#ifndef __AST_LITERALNODE
+#define __AST_LITERALNODE 1
+
 #include "abstractnode.hpp"
 #include <string>
 
@@ -16,3 +20,5 @@ namespace AST {
       std::string string_value;
   };
 }
+
+#endif

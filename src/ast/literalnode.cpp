@@ -22,7 +22,7 @@ AST::LiteralNode::LiteralNode(std::string value)
 
 AST::LiteralNode::~LiteralNode()
 {
-
+  std::cout << "Destructor - Literal Node" << std::endl;
 }
 
 void

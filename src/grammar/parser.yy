@@ -14,6 +14,7 @@
   }
 
   namespace AST {
+    class Stack;
     class AbstractNode;
     class LiteralNode;
   }
@@ -32,13 +33,14 @@
 
 #include "util/debug_new/debug_new.h"
 #include "frontend/headers/driver.hpp"
-#include "ast/headers/abstractnode.hpp"
-#include "ast/headers/literalnode.hpp"
+#include "ast/headers/ast.hpp"
 
 #undef yylex
 #define yylex scanner.yylex
 
 }
+
+%destructor { if ($$)  { delete ($$); ($$) = nullptr; } } <sval> <abstract_node>
 
 %locations
 %initial-action {
@@ -56,17 +58,30 @@
   int ival;
   std::string *sval;
   AST::AbstractNode   *abstract_node;
+  AST::Stack          *stack;
 }
 
+%type <stack>         Expressions
 %type <abstract_node> Expression Literal
 
 %%
 
+root:
+   Expressions { $1->compile(); delete($1); }
+  ;
+
 Expressions:
-    Expression                        { $1->compile(); }
-  | Expressions Terminator Expression {}
+    Expression                        {
+                                        std::vector<AST::AbstractNode *> nodes;
+                                        nodes.push_back($1);
+                                        $$ = new AST::Stack(nodes);
+                                      }
+  | Expressions Terminator Expression {
+                                        $1->push_node($3);
+                                        $$ = $1;
+                                      }
   |                                   {}
-  | Expressions Terminator            {}
+  | Expressions Terminator            { $$ = $1; }
   ;
 
 Expression:
