@@ -40,7 +40,7 @@
 
 }
 
-%destructor { if ($$)  { delete ($$); ($$) = nullptr; } } <sval> <abstract_node>
+%destructor { if ($$)  { delete ($$); ($$) = nullptr; } } <sval> <abstract_node> <stack>
 
 %locations
 %initial-action {
@@ -95,7 +95,7 @@ Literal:
   ;
 
 Errors:
-    T_FATAL_ERROR { error(yyla.location, *$1); YYABORT; }
+    T_FATAL_ERROR { error(yyla.location, *$1); delete($1); YYABORT; }
   ;
 
 Terminator:

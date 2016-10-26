@@ -1,4 +1,5 @@
 #include "headers/stack.hpp"
+#include "util/debug_new/debug_new.h"
 
 AST::Stack::Stack(std::vector<AST::AbstractNode*> nodes)
 {
