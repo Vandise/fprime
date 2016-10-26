@@ -50,36 +50,6 @@ import              BEGIN(incl);
                       current_file->line += 1;
                       return( token::T_NEWLINE );   
                     }
-
-"byte"              {  yylval->build< int >( BYTE );    return( token::T_TYPE_BYTE );    }
-"bool"              {  yylval->build< int >( BOOLEAN ); return( token::T_TYPE_BOOLEAN ); }
-"int_8"             {  yylval->build< int >( INT_8 );   return( token::T_TYPE_INT_8 );   }
-"int_16"            {  yylval->build< int >( INT_16 );  return( token::T_TYPE_INT_16 );  }
-"int_32"            {  yylval->build< int >( INT_32 );  return( token::T_TYPE_INT_32 );  }
-"int_64"            {  yylval->build< int >( INT_64 );  return( token::T_TYPE_INT_64 );  }
-"int"               {  yylval->build< int >( INTEGER ); return( token::T_TYPE_INTEGER ); }
-"float"             {  yylval->build< int >( FLOAT );   return( token::T_TYPE_FLOAT );   }
-"decimal"           {  yylval->build< int >( DOUBLE );  return( token::T_TYPE_DOUBLE );  }
-"string"            {  yylval->build< int >( STRING );  return( token::T_TYPE_STRING );  }
-"void"              {  yylval->build< int >( VOID );    return ( token::T_TYPE_VOID );   }
-"func"              {  return ( token::T_FUNCTION );                                     }
-"end"               {  return ( token::T_END );                                          }
-
-"struct"            { return ( token::T_STRUCT );        }
-"*"                 { return ( token::T_ASTERISK );      }
-"["                 { return ( token::T_OPEN_BRACKET );  }
-"]"                 { return ( token::T_CLOSE_BRACKET ); }
-"{"                 { return ( token::T_OPEN_BRACE );    }
-"}"                 { return ( token::T_CLOSE_BRACE );   }
-"("                 { return ( token::T_OPEN_PAREN );  }
-")"                 { return ( token::T_CLOSE_PAREN ); }
-"="                 { return ( token::T_EQUAL );   }
-
-[_a-zA-Z\\?\\!]+    {
-                      yylval->build< std::string >( yytext );
-                      return( token::T_IDENTIFIER );
-                    }  
-
 [\ \t]+             
 \"[^"]*\"           {
                       yylval->build< std::string >( yytext );

@@ -82,7 +82,6 @@
     @$.begin.filename = @$.end.filename = &driver.file;
 };
 
-%type <int>         DataTypes
 %type <std::string> Errors
 
 %%
@@ -96,10 +95,6 @@ Expressions:
 
 Expression:
     Literal
-  | Initialize
-  | Assignment
-  | Struct
-  | Function
   | Errors
   ;
 
@@ -108,63 +103,14 @@ Literal:
   | T_INTEGER { std::cout << "Found Integer: " << $1 << std::endl; }
   ;
 
-Initialize:
-    DataTypes T_IDENTIFIER
-      { std::cout << "Setting Identifier: " << $2 << " with type: " << $1 << std::endl; }
-  | DataTypes T_ASTERISK T_IDENTIFIER
-      { std::cout << "Setting Identifier: " << $3 << " pointer: " << POINTER << " type: " << $1 << std::endl; }
-  | DataTypes T_OPEN_BRACKET T_CLOSE_BRACKET T_IDENTIFIER
-      { std::cout << "Setting Identifier: " << $4 << " with type: " << ARRAY << " Only: " << $1 << std::endl; }
-  | DataTypes T_OPEN_BRACKET T_INTEGER T_CLOSE_BRACKET T_IDENTIFIER
-      { std::cout << "Setting Identifier: " << $5 << " with type: " << ARRAY << " Only: " << $1 << " Fixed Size: " << $3 << std::endl; }
-  ;
-
-Assignment:
-    Initialize T_EQUAL Expression { std::cout << "Assigning variable with a type" << std::endl; }
-  ;
-
 Errors:
     T_FATAL_ERROR { error(yyla.location, $1); YYABORT; }
-  ;
-
-DataTypes:
-    T_TYPE_BYTE      { $$ = $1; }
-  | T_TYPE_BOOLEAN   { $$ = $1; }
-  | T_TYPE_INT_8     { $$ = $1; }
-  | T_TYPE_INT_16    { $$ = $1; }
-  | T_TYPE_INT_32    { $$ = $1; }
-  | T_TYPE_INT_64    { $$ = $1; }
-  | T_TYPE_INTEGER   { $$ = $1; }
-  | T_TYPE_FLOAT     { $$ = $1; }
-  | T_TYPE_DOUBLE    { $$ = $1; }
-  | T_TYPE_STRING    { $$ = $1; }
-  | T_TYPE_VOID      { $$ = $1; }
-  ;
-
-Struct:
-    T_STRUCT T_IDENTIFIER T_OPEN_BRACE
-      StructInitializers
-    T_CLOSE_BRACE
-                  { std::cout << "Structure definition: " << $2 << std::endl; }
-  ;
-
-StructInitializers:
-    Initialize                                {}
-  | StructInitializers Terminator Initialize  {}
-  |                                           { /* error(yyla.location, "Struct cannot have empty body definition"); YYABORT; */ }
-  | StructInitializers Terminator             {}
-  ;
-
-Function:
-    DataTypes T_IDENTIFIER T_OPEN_PAREN T_CLOSE_PAREN
-      Expressions
-    T_END
-          { std::cout << "Creating function: " << $2 << std::endl; }
   ;
 
 Terminator:
   T_NEWLINE
   ;
+
 %%
 
 void

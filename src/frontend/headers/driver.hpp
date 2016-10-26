@@ -3,6 +3,7 @@
 
 #include "frontend/scanner.hpp"
 #include "frontend/parser.tab.hpp"
+#include "ast/headers/stack.hpp"
 
 namespace FrontEnd {
   class Driver {
