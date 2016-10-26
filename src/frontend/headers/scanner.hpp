@@ -6,8 +6,8 @@
 #include <fstream>
 #endif
 
-#include "parser.tab.hpp"
-#include "location.hh"
+#include "frontend/parser.tab.hpp"
+#include "frontend/location.hh"
 #include "util/debug_new/debug_new.h"
 
 typedef struct file_map {

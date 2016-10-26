@@ -5,7 +5,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include "frontend/scanner.hpp"
+#include "frontend/headers/scanner.hpp"
 #include "util/debug_new/debug_new.h"
 
 #undef  YY_DECL
@@ -13,7 +13,6 @@
 
 using token = FrontEnd::Parser::token;
 
-#define T_STRING( s ) ( new std::string(s) )
 #define YY_NO_UNISTD_H
 #define YY_USER_ACTION loc->step(); loc->columns(yyleng);                 \
         if (current_file->previous != nullptr) {                          \
@@ -48,15 +47,11 @@ import              BEGIN(incl);
 
 \n                  {
                       current_file->line += 1;
-                      return( token::T_NEWLINE );   
+                      return( token::T_NEWLINE );
                     }
-[\ \t]+             
-\"[^"]*\"           {
-                      yylval->build< std::string >( yytext );
-                      return(token::T_STRING);
-                    }
+
 {integer}           {
-                      yylval->build< int >( atoi(yytext) );
+                      yylval->ival = (atoi(yytext));
                       return( token::T_INTEGER );
                     }
 .                   { }
@@ -78,7 +73,7 @@ import              BEGIN(incl);
 
                       if (!yyin || !current_file->fp->is_open())
                       {
-                        yylval->build< std::string >( "Unable to import file " + std::string(yytext) );
+                        yylval->sval = new std::string("Unable to import file " + current_file->filename);
                         return( token::T_FATAL_ERROR );
                       }
 

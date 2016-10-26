@@ -8,11 +8,14 @@
 
 %code requires {
 
-#include "common/fprime.h"
-
   namespace FrontEnd {
     class Driver;
     class Scanner;
+  }
+
+  namespace AST {
+    class AbstractNode;
+    class LiteralNode;
   }
 
 }
@@ -29,65 +32,38 @@
 
 #include "util/debug_new/debug_new.h"
 #include "frontend/headers/driver.hpp"
+#include "ast/headers/abstractnode.hpp"
+#include "ast/headers/literalnode.hpp"
 
 #undef yylex
 #define yylex scanner.yylex
 
 }
 
-%define parse.assert
-%define api.value.type variant
-
-/* def */
-%token    <std::string>  T_IDENTIFIER
-
-/* literals */
-%token    <std::string>  T_STRING
-%token    <int>          T_INTEGER
-
-/* types */
-%token    <int>          T_TYPE_BYTE
-%token    <int>          T_TYPE_BOOLEAN
-%token    <int>          T_TYPE_INT_8
-%token    <int>          T_TYPE_INT_16
-%token    <int>          T_TYPE_INT_32
-%token    <int>          T_TYPE_INT_64
-%token    <int>          T_TYPE_INTEGER
-%token    <int>          T_TYPE_FLOAT
-%token    <int>          T_TYPE_DOUBLE
-%token    <int>          T_TYPE_STRING
-%token    <int>          T_TYPE_ARRAY
-%token    <int>          T_TYPE_VOID
-
-%token                   T_FUNCTION
-%token                   T_END
-
-/* misc */
-%token                   T_OPEN_PAREN
-%token                   T_CLOSE_PAREN
-%token                   T_OPEN_BRACKET
-%token                   T_CLOSE_BRACKET
-%token                   T_OPEN_BRACE
-%token                   T_CLOSE_BRACE
-%token                   T_ASTERISK
-%token                   T_STRUCT
-%token                   T_EQUAL
-%token    <std::string>  T_FATAL_ERROR
-%token                   T_NEWLINE
-%token                   PRGEND 0     "end of file"
-
-
 %locations
 %initial-action {
     @$.begin.filename = @$.end.filename = &driver.file;
 };
 
-%type <std::string> Errors
+%token                   T_STRING
+%token       <ival>      T_INTEGER
+
+%token       <sval>      T_FATAL_ERROR
+%token                   T_NEWLINE
+%token                   PRGEND 0     "end of file"
+
+%union {
+  int ival;
+  std::string *sval;
+  AST::AbstractNode   *abstract_node;
+}
+
+%type <abstract_node> Expression Literal
 
 %%
 
 Expressions:
-  Expression                          {}
+    Expression                        { $1->compile(); }
   | Expressions Terminator Expression {}
   |                                   {}
   | Expressions Terminator            {}
@@ -99,12 +75,12 @@ Expression:
   ;
 
 Literal:
-    T_STRING  { std::cout << "Found String: "  << $1 << std::endl; }
-  | T_INTEGER { std::cout << "Found Integer: " << $1 << std::endl; }
+    T_STRING  { std::cout << "Found String: "  << "" << std::endl; }
+  | T_INTEGER { std::cout << "Found Integer: " << $1 << std::endl; $$ = new AST::LiteralNode($1); }
   ;
 
 Errors:
-    T_FATAL_ERROR { error(yyla.location, $1); YYABORT; }
+    T_FATAL_ERROR { error(yyla.location, *$1); YYABORT; }
   ;
 
 Terminator:
@@ -116,7 +92,7 @@ Terminator:
 void
 FrontEnd::Parser::error(const location_type& l, const std::string& m )
 {
-  std::ifstream error_file (*l.begin.filename);
+  std::ifstream error_file ( *l.begin.filename );
   std::string line;
   int line_number = 1;
   int chars_read = 0;
@@ -207,4 +183,3 @@ FrontEnd::Parser::error(const location_type& l, const std::string& m )
   }
 
 }
-
