@@ -12,13 +12,17 @@ FrontEnd::Driver::~Driver()
    parser = nullptr;
 }
 
-void
+int
 FrontEnd::Driver::parse( const char *const filename )
 {
   file = std::string(filename);
   assert(filename != nullptr);
   std::ifstream in_file( filename );
-  if( !in_file.good() ) exit( EXIT_FAILURE );
+  if( !in_file.good() )
+  {
+    std::cout << "File not found " << filename << std::endl;
+    return EXIT_FAILURE;
+  }
 
   delete(scanner);
   try
@@ -29,7 +33,7 @@ FrontEnd::Driver::parse( const char *const filename )
   {
     std::cerr << "Failed to allocate scanner: (" <<
       ba.what() << "), exiting!!\n";
-    exit( EXIT_FAILURE );
+    return ( EXIT_FAILURE );
   }
 
   delete(parser);
@@ -42,8 +46,25 @@ FrontEnd::Driver::parse( const char *const filename )
   {
     std::cerr << "Failed to allocate parser: (" <<
       ba.what() << "), exiting!!\n";
-    exit( EXIT_FAILURE );
+    return ( EXIT_FAILURE );
   }
 
   parser->parse();
+
+  return ( EXIT_SUCCESS );
+}
+
+void
+FrontEnd::Driver::push_stack( std::vector<AST::AbstractNode*> stack)
+{
+  for (int i = 0; i < stack.size(); i++)
+  {
+    AST::Stack::nodes.push_back( stack[i] );
+  }
+}
+
+void
+FrontEnd::Driver::push_node( AST::AbstractNode *node )
+{
+  AST::Stack::nodes.push_back(node);
 }

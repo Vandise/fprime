@@ -1,6 +1,5 @@
 #pragma once
 #include "abstractnode.hpp"
-
 #include <string>
 
 namespace AST {
@@ -12,5 +11,8 @@ namespace AST {
       LiteralNode(std::string value);
       virtual ~LiteralNode();
       virtual void compile();
+    private:
+      int         int_value;
+      std::string string_value;
   };
 }

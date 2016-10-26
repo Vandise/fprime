@@ -10,6 +10,5 @@ main( const int argc, const char **argv )
     return ( EXIT_FAILURE );
 
   FrontEnd::Driver driver;
-  driver.parse( argv[1] );
-  return (EXIT_SUCCESS);
+  return driver.parse( argv[1] );
 }
