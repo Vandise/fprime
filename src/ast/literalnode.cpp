@@ -8,13 +8,15 @@ AST::LiteralNode::LiteralNode()
 
 }
 
-AST::LiteralNode::LiteralNode(int value)
+AST::LiteralNode::LiteralNode(int value, FPTYPE type)
 {
+  data_type = type;
   int_value = value;
 }
 
-AST::LiteralNode::LiteralNode(std::string value)
+AST::LiteralNode::LiteralNode(std::string value, FPTYPE type)
 {
+  data_type = type;
   string_value = value;
 }
 
@@ -28,5 +30,14 @@ AST::LiteralNode::~LiteralNode()
 void
 AST::LiteralNode::compile()
 {
-  std::cout << "Compiling" << std::endl;
+  switch(data_type) {
+    case INT_32:
+      std::cout << "Compiling Type: " << data_type << " with value: " << int_value << std::endl;
+      break;
+    case INT_64:
+      break;
+    default:
+      std::cout << "Compiling node" << std::endl;
+      break;
+  }
 }

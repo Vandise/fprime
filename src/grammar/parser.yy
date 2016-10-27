@@ -33,6 +33,7 @@
 
 #include "util/debug_new/debug_new.h"
 #include "frontend/headers/driver.hpp"
+#include "common/fprime.hpp"
 #include "ast/headers/ast.hpp"
 
 #undef yylex
@@ -91,7 +92,7 @@ Expression:
 
 Literal:
     T_STRING  { std::cout << "Found String: "  << "" << std::endl; }
-  | T_INTEGER { std::cout << "Found Integer: " << $1 << std::endl; $$ = new AST::LiteralNode($1); }
+  | T_INTEGER { std::cout << "Found Integer: " << $1 << std::endl; $$ = new AST::LiteralNode($1, INT_32); }
   ;
 
 Errors:
