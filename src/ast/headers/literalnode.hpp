@@ -18,6 +18,7 @@ namespace AST {
       virtual void compile();
     private:
       FPTYPE      data_type;
+      bool        immutable;
       int         int_value;
       std::string string_value;
   };

@@ -113,6 +113,8 @@ FrontEnd::Parser::error(const location_type& l, const std::string& m )
   int line_number = 1;
   int chars_read = 0;
 
+  std::cout << "Errored" << std::endl;
+
   if (error_file) {
 
     std::cout << std::endl << "-- ERROR " << std::endl;
