@@ -36,6 +36,9 @@ AST::LiteralNode::compile()
       break;
     case INT_64:
       break;
+    case STRING:
+      std::cout << "Compiling Type: " << data_type << " with value: " << string_value << std::endl;
+      break;
     default:
       std::cout << "Compiling node" << std::endl;
       break;

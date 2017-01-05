@@ -54,6 +54,11 @@ import              BEGIN(incl);
                       yylval->ival = (atoi(yytext));
                       return( token::T_INTEGER );
                     }
+\"[^"]*\"           {
+                      yylval->sval = new std::string(yytext);
+                      yylval->sval->erase(remove(yylval->sval->begin(), yylval->sval->end(), '\"' ), yylval->sval->end());
+                      return( token::T_STRING );
+                    }
 .                   { }
 
 <incl>[ \t]*        /* skip whitespace */

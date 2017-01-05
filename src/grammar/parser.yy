@@ -48,7 +48,7 @@
     @$.begin.filename = @$.end.filename = &driver.file;
 };
 
-%token                   T_STRING
+%token       <sval>      T_STRING
 %token       <ival>      T_INTEGER
 
 %token       <sval>      T_FATAL_ERROR
@@ -91,7 +91,7 @@ Expression:
   ;
 
 Literal:
-    T_STRING  { std::cout << "Found String: "  << "" << std::endl; }
+    T_STRING  { std::cout << "Found String: "  << *$1 << std::endl; $$ = new AST::LiteralNode(*$1, STRING); delete($1); }
   | T_INTEGER { std::cout << "Found Integer: " << $1 << std::endl; $$ = new AST::LiteralNode($1, INT_32); }
   ;
 
