@@ -22,7 +22,7 @@ current_dir = $(shell pwd)
 CXXSTD      := -std=c++11 -Wno-deprecated-register
 CFLAGS      := $(CXXSTD) -fopenmp -Wall -O3 -g
 #LIB         := -fopenmp -lm -larmadillo
-INC         := -I$(INCDIR) -Isrc -Isrc/test -I../
+INC         := -I$(INCDIR) -Isrc -Isrc/test -I../ -I/usr/local/opt/flex/include
 INCDEP      := -I$(INCDIR)
 PARSER_LEXER =  parser lexer
 
