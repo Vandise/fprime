@@ -41,7 +41,9 @@
 
 }
 
+/*
 %destructor { if ($$)  { delete ($$); ($$) = nullptr; } } <sval> <abstract_node> <stack>
+*/
 
 %locations
 %initial-action {
@@ -68,7 +70,7 @@
 %%
 
 root:
-   Expressions { $1->compile(); delete($1); }
+   Expressions { driver.stack = $1; }
   ;
 
 Expressions:

@@ -4,6 +4,7 @@
 #include <string>
 #include <cstdint>
 #include <vector>
+#include "ast/headers/ast.hpp"
 #include "frontend/headers/scanner.hpp"
 #include "frontend/parser.tab.hpp"
 
@@ -14,9 +15,10 @@ namespace FrontEnd
   {
     public:
        std::string file;
+       AST::Stack  *stack;
        Driver() = default;
        virtual ~Driver();
-       void parse( const char *filename );
+       int parse( const char *filename );
        void push_stack();
        void push_node();
 

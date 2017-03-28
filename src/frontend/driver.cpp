@@ -10,6 +10,8 @@ FrontEnd::Driver::~Driver()
    scanner = nullptr;
    delete(parser);
    parser = nullptr;
+   delete(stack);
+   stack = nullptr;
 }
 
 void
@@ -24,7 +26,7 @@ FrontEnd::Driver::push_node()
 
 }
 
-void
+int
 FrontEnd::Driver::parse( const char * const filename )
 {
    file = std::string(filename);
@@ -55,5 +57,5 @@ FrontEnd::Driver::parse( const char * const filename )
       exit( EXIT_FAILURE );
    }
 
-   parser->parse();
+   return parser->parse();
 }
