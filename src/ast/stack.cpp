@@ -23,6 +23,11 @@ AST::Stack::compile()
   }
 }
 
+int
+AST::Stack::stack_size() {
+  return nodes.size();
+}
+
 void
 AST::Stack::push_node(AST::AbstractNode *node)
 {

@@ -14,6 +14,7 @@ namespace AST {
       Stack(std::vector<AST::AbstractNode*> nodes);
       virtual ~Stack();
       virtual void compile();
+      int stack_size();
       void push_node(AST::AbstractNode *node);
       void push_nodes(std::vector<AST::AbstractNode*> nodes);
     private:

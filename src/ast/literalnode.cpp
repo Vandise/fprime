@@ -20,8 +20,6 @@ AST::LiteralNode::LiteralNode(std::string value, FPTYPE type)
   string_value = value;
 }
 
-
-
 AST::LiteralNode::~LiteralNode()
 {
   std::cout << "Destructor - Literal Node" << std::endl;

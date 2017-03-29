@@ -2,6 +2,7 @@
 #define __COMMONTEST_HPP__ 1
 
 #include "util/test/catch.h"
+#include "frontend/headers/driver.hpp"
 #include <iostream>
 #include <stdexcept>
 
