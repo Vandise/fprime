@@ -20,6 +20,8 @@ namespace Generator
     public:
       ContextManager();
       virtual ~ContextManager();
+      int frame_heap_size();
+      int next_frame(std::string label);
       Generator::Frame* get_current_frame();
   };
 }
