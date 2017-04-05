@@ -2,18 +2,16 @@
 #define __CONTEXTMANAGER_HPP__ 1
 
 #define HEAP_FRAME_SIZE 50
-#define INITIAL_FRAME    0
 
 #include <string>
 #include <vector>
+#include "frame.hpp"
 
 /*
   Context Manager (frames)
 */
 namespace Generator
 {
-  class Frame;
-
   class ContextManager
   {
     private:
@@ -22,6 +20,7 @@ namespace Generator
     public:
       ContextManager();
       virtual ~ContextManager();
+      Generator::Frame* get_current_frame();
   };
 }
 

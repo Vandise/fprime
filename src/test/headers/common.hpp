@@ -3,6 +3,7 @@
 
 #include "util/test/catch.h"
 #include "frontend/headers/driver.hpp"
+#include "generator/headers/contextManager.hpp"
 #include <iostream>
 #include <stdexcept>
 

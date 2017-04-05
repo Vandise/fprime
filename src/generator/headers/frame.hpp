@@ -16,6 +16,7 @@ namespace Generator
     public:
       Frame(std::string label);
       virtual ~Frame();
+      std::string get_label();
   };
 }
 
