@@ -31,6 +31,18 @@ Generator::ContextManager::next_frame(std::string label)
   return 1;
 }
 
+int
+Generator::ContextManager::exit_frame()
+{
+  if (frame_heap.empty()) {
+    // exiting main scope
+    return 0;
+  }
+  delete (frame_heap.back());
+  frame_heap.pop_back();
+  return 1;
+}
+
 Generator::Frame*
 Generator::ContextManager::get_current_frame()
 {

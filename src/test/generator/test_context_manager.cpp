@@ -32,11 +32,39 @@ SCENARIO("Context Manager", "[Generator::ContextManager]")
     {
       cm.next_frame(std::to_string(i));
     }
-    THEN("It should fail to push the frame onto the stack")
+    WHEN("Shifting to the next frame")
     {
-      int result = cm.next_frame(std::string("my_function_scope"));
-      REQUIRE(result == 0);
-      REQUIRE(cm.frame_heap_size() == HEAP_FRAME_SIZE);
+      THEN("It should fail to push the frame onto the stack")
+      {
+        int result = cm.next_frame(std::string("my_function_scope"));
+        REQUIRE(result == 0);
+        REQUIRE(cm.frame_heap_size() == HEAP_FRAME_SIZE);
+      }
+    }
+  }
+  GIVEN("On the main frame")
+  {
+    Generator::ContextManager cm = Generator::ContextManager();
+    WHEN("Exiting the current frame")
+    {
+      THEN("It should return a truthy value")
+      {
+        int result = cm.exit_frame();
+        REQUIRE(result == 1);
+      }
+    }
+  }
+  GIVEN("There is no current frame")
+  {
+    Generator::ContextManager cm = Generator::ContextManager();
+    WHEN("Exiting the current frame")
+    {
+      THEN("It should return 0")
+      {
+        cm.exit_frame(); // exit main
+        int result = cm.exit_frame();
+        REQUIRE(result == 0);
+      }
     }
   }
 }
