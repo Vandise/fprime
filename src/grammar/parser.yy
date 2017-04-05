@@ -93,8 +93,8 @@ Expression:
   ;
 
 Literal:
-    T_STRING  { std::cout << "Found String: "  << *$1 << std::endl; $$ = new AST::LiteralNode(*$1, STRING); delete($1); }
-  | T_INTEGER { std::cout << "Found Integer: " << $1 << std::endl; $$ = new AST::LiteralNode($1, INT_32); }
+    T_STRING  { std::cout << "Found String: "  << *$1 << std::endl; $$ = fp_string_node($1); delete($1); }
+  | T_INTEGER { std::cout << "Found Integer: " << $1 << std::endl;  $$ = fp_int32_node($1); }
   ;
 
 Errors:
