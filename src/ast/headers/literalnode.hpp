@@ -15,7 +15,7 @@ namespace AST {
       LiteralNode(int value, FPTYPE type);
       LiteralNode(std::string value, FPTYPE type);
       virtual ~LiteralNode();
-      virtual void compile();
+      virtual void compile(Generator::ContextManager *context);
     private:
       FPTYPE      data_type;
       bool        immutable;

@@ -26,16 +26,17 @@ AST::LiteralNode::~LiteralNode()
 }
 
 void
-AST::LiteralNode::compile()
+AST::LiteralNode::compile(Generator::ContextManager *context)
 {
+  std::string frame_label = context->get_current_frame()->get_label();
   switch(data_type) {
     case INT_32:
-      std::cout << "Compiling Type: " << data_type << " with value: " << int_value << std::endl;
+      std::cout << "Compiling Type: " << data_type << " with value: " << int_value << " in frame " << frame_label << std::endl;
       break;
     case INT_64:
       break;
     case STRING:
-      std::cout << "Compiling Type: " << data_type << " with value: " << string_value << std::endl;
+      std::cout << "Compiling Type: " << data_type << " with value: " << string_value  << " in frame " << frame_label << std::endl;
       break;
     default:
       std::cout << "Compiling node" << std::endl;

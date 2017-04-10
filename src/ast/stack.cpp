@@ -4,10 +4,12 @@
 AST::Stack::Stack(std::vector<AST::AbstractNode*> nodes)
 {
   this->nodes = nodes;
+  this->context = new Generator::ContextManager();
 }
 
 AST::Stack::~Stack()
 {
+  delete(this->context);
   for (auto &n : nodes)
   {
     delete(n);
@@ -15,11 +17,11 @@ AST::Stack::~Stack()
 }
 
 void
-AST::Stack::compile()
+AST::Stack::compile(Generator::ContextManager *context)
 {
   for (auto &n : nodes)
   {
-    n->compile();
+    n->compile(this->context);
   }
 }
 

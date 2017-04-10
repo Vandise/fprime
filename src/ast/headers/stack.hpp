@@ -13,12 +13,13 @@ namespace AST {
     public:
       Stack(std::vector<AST::AbstractNode*> nodes);
       virtual ~Stack();
-      virtual void compile();
+      virtual void compile(Generator::ContextManager *context);
       int stack_size();
       void push_node(AST::AbstractNode *node);
       void push_nodes(std::vector<AST::AbstractNode*> nodes);
     private:
       std::vector<AST::AbstractNode*> nodes;
+      Generator::ContextManager *context;
   };
 }
 
