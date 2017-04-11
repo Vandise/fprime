@@ -19,7 +19,6 @@ namespace AST {
       void push_nodes(std::vector<AST::AbstractNode*> nodes);
     private:
       std::vector<AST::AbstractNode*> nodes;
-      Generator::CodeGenerator *cg;
   };
 }
 

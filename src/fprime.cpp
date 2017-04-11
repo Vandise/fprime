@@ -11,10 +11,12 @@ main( const int argc, const char **argv )
   if(argc != 2)
     return ( EXIT_FAILURE );
 
+  Generator::CodeGenerator *cg = new Generator::CodeGenerator();
   FrontEnd::Driver driver;
   parse_result = driver.parse( argv[1] );
   if (parse_result == 0) {
-    driver.stack->compile(nullptr);
+    driver.stack->compile(cg);
   }
+  delete(cg);
   return 1;
 }
