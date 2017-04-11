@@ -30,4 +30,15 @@ SCENARIO("Frame", "[Generator::Frame]")
       REQUIRE(f.get_literal_values().back() == value);
     }
   }
+
+  WHEN("A frame instruction is pushed")
+  {
+    THEN("It should be pushed to the instructions vector")
+    {
+      std::string instruction = "mov 10, rax";
+      f.push_instruction(instruction);
+      REQUIRE(f.get_instructions().size() == 1);
+      REQUIRE(f.get_instructions().back() == instruction);
+    }
+  }
 }

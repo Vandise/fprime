@@ -43,3 +43,15 @@ Generator::Frame::get_literal_references()
 {
   return this->literal_reference;
 }
+
+void
+Generator::Frame::push_instruction(std::string instruction)
+{
+  this->instructions.push_back(instruction);
+}
+
+std::vector<std::string>
+Generator::Frame::get_instructions()
+{
+  return this->instructions;
+}

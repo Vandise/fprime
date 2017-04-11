@@ -16,6 +16,7 @@ namespace Generator
     private:
       std::vector<int> literal_values;
       std::map<std::string, int> literal_reference;
+      std::vector<std::string> instructions;
       std::string label;
 
     public:
@@ -26,6 +27,8 @@ namespace Generator
       std::map<std::string, int> get_literal_references();
       int get_literal_value(std::string literal);
       void set_literal_value(std::string literal_name, int value);
+      void push_instruction(std::string instruction);
+      std::vector<std::string> get_instructions();
   };
 }
 
