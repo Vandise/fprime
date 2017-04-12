@@ -18,6 +18,7 @@ namespace Generator
       std::map<std::string, int> literal_reference;
       std::vector<std::string> instructions;
       std::string label;
+      std::vector<int> stack;
 
     public:
       Frame(std::string label);
@@ -25,10 +26,13 @@ namespace Generator
       std::string get_label();
       std::vector<int> get_literal_values();
       std::map<std::string, int> get_literal_references();
+      int get_literal_offset(std::string identifier);
       int get_literal_value(std::string literal);
       void set_literal_value(std::string literal_name, int value);
       void push_instruction(std::string instruction);
       std::vector<std::string> get_instructions();
+      void push_stack(int value);
+      int  pop_stack();
   };
 }
 

@@ -29,6 +29,12 @@ SCENARIO("Frame", "[Generator::Frame]")
       f.set_literal_value("decade", value);
       REQUIRE(f.get_literal_values().back() == value);
     }
+    THEN("The Literal reference should map to the offset")
+    {
+      int value = 12;
+      f.set_literal_value("my_decade", value);
+      REQUIRE(f.get_literal_offset("my_decade") == 0);
+    }
   }
 
   WHEN("A frame instruction is pushed")

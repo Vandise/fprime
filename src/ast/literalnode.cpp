@@ -32,6 +32,7 @@ AST::LiteralNode::compile(Generator::CodeGenerator *cg)
   switch(data_type) {
     case INT_32:
       std::cout << "Compiling Type: " << data_type << " with value: " << int_value << " in frame " << frame_label << std::endl;
+      cg->context_manager->get_current_frame()->push_stack(int_value);
       break;
     case INT_64:
       break;

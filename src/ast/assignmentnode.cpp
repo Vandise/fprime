@@ -19,5 +19,11 @@ AST::AssignmentNode::~AssignmentNode()
 void
 AST::AssignmentNode::compile(Generator::CodeGenerator *cg)
 {
+  this->expression->compile(cg);
+  cg->context_manager->get_current_frame()->set_literal_value(
+    this->identifier,
+    cg->context_manager->get_current_frame()->pop_stack()
+  );
+  std::cout << "The assigned value is: " << cg->context_manager->get_current_frame()->pop_stack() << std::endl;
   std::cout << "Assigning " << this->identifier << " type " << this->data_type << std::endl;
 }
