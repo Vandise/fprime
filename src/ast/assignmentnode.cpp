@@ -26,4 +26,7 @@ AST::AssignmentNode::compile(Generator::CodeGenerator *cg)
   );
   std::cout << "The assigned value is: " << cg->context_manager->get_current_frame()->get_literal_value(this->identifier) << std::endl;
   std::cout << "Assigning " << this->identifier << " type " << this->data_type << std::endl;
+
+  std::string displacement = std::to_string(cg->context_manager->get_current_frame()->get_literal_offset(this->identifier) + 1);
+  cg->emit_dword_indirect("rbp", displacement, 4, -1, false, true);
 }

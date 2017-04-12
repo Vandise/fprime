@@ -40,7 +40,11 @@ Generator::CodeGenerator::emit_dword_indirect(std::string base_reg, std::string 
       line += index;
     }
     if(scale != -1) {
-      line += "*" + std::to_string(scale);
+      if(index != "") {
+        line += "*" + std::to_string(scale);
+      } else {
+        line += std::to_string(scale) + "*";
+      }
     }
     if(disp != -1) {
       if(add_displacement) {
