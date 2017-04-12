@@ -5,10 +5,9 @@ SCENARIO("Context Manager", "[Generator::ContextManager]")
   WHEN("The manager is initialized")
   {
     Generator::ContextManager cm = Generator::ContextManager();
-    THEN("It should push a frame labeled 'main' onto the heap")
+    THEN("The frame heap should be empty")
     {
-      REQUIRE(cm.frame_heap_size() == 1);
-      REQUIRE(cm.get_current_frame()->get_label() == "main");
+      REQUIRE(cm.frame_heap_size() == 0);
     }
   }
   GIVEN("The frame heap is not full")
@@ -18,7 +17,8 @@ SCENARIO("Context Manager", "[Generator::ContextManager]")
     {
       THEN("The new frame is pushed onto the heap")
       {
-        int result = cm.next_frame(std::string("my_function_scope"));
+        int result = cm.next_frame(std::string("main"));
+        result = cm.next_frame(std::string("my_function_scope"));
         REQUIRE(result == 1);
         REQUIRE(cm.frame_heap_size() == 2);
         REQUIRE(cm.get_current_frame()->get_label() == "my_function_scope");
@@ -49,6 +49,7 @@ SCENARIO("Context Manager", "[Generator::ContextManager]")
     {
       THEN("It should return a truthy value")
       {
+        cm.next_frame(std::string("main"));
         int result = cm.exit_frame();
         REQUIRE(result == 1);
       }

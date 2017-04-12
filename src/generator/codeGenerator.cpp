@@ -13,7 +13,25 @@ Generator::CodeGenerator::CodeGenerator()
 {
   this->context_manager = new Generator::ContextManager();
   this->section_manager = new Generator::SectionManager();
+
+  this->start_frame("main");
 }
+
+
+void
+Generator::CodeGenerator::start_frame(std::string label)
+{
+  this->context_manager->next_frame(label);
+  EMIT_FRAME_START(this);
+}
+
+void
+Generator::CodeGenerator::exit_frame()
+{
+  this->context_manager->exit_frame();
+  EMIT_FRAME_EXIT(this);
+}
+
 
 void
 Generator::CodeGenerator::push_buffer(std::string b)

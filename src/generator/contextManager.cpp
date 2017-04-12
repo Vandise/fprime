@@ -11,7 +11,7 @@ Generator::ContextManager::~ContextManager()
 
 Generator::ContextManager::ContextManager()
 {
-  frame_heap.push_back(new Frame(std::string("main")));
+  // frame_heap.push_back(new Frame(std::string("main")));
 }
 
 int

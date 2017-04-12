@@ -34,10 +34,16 @@ namespace Generator
     public:
       CodeGenerator();
       virtual ~CodeGenerator();
+
       void push_buffer(std::string b);
       void push_line();
+
+      void start_frame(std::string label);
+      void exit_frame();
+
       std::string reg(FP_REGISTERS r);
       std::string instruction(FP_INSTRUCTIONS i);
+
       std::string dword_indirect(
         std::string base_reg = "",
         std::string index = "",

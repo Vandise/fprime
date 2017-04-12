@@ -26,4 +26,16 @@
   cg->push_line();                           \
 }
 
+#define EMIT_FRAME_START(cg)                        \
+{                                                   \
+  cg->push_buffer("push    rbp\nmov     rbp, rsp"); \
+  cg->push_line();                                  \
+}
+
+#define EMIT_FRAME_EXIT(cg)           \
+{                                     \
+  cg->push_buffer("pop    rbp\nret"); \
+  cg->push_line();                    \
+}
+
 #endif
