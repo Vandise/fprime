@@ -5,6 +5,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include "common/fprime.hpp"
 #include "frontend/headers/scanner.hpp"
 #include "util/debug_new/debug_new.h"
 
@@ -50,6 +51,18 @@ import              BEGIN(incl);
                       return( token::T_NEWLINE );
                     }
 
+int_32              {
+                      yylval->datatype = INT_32;
+                      return( token::T_TYPE_INT_32 );
+                    }
+[_a-zA-Z\\?\\!]+    {
+                      yylval->sval = new std::string(yytext);
+                      yylval->sval->erase(remove(yylval->sval->begin(), yylval->sval->end(), '\"' ), yylval->sval->end());
+                      return( token::T_IDENTIFIER );
+                    }
+"="                 {
+                      return( token::T_ASSIGN );
+                    }
 {integer}           {
                       yylval->ival = (atoi(yytext));
                       return( token::T_INTEGER );

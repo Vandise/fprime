@@ -1,7 +1,7 @@
 #ifndef __FPRIME_TYPES_HPP__
 #define __FPRIME_TYPES_HPP__ 1
 
-typedef enum e_FPTYPE {
+typedef enum {
   VOID     = 0x0000,
   INT_32   = 0x0001,
   INT_64   = 0x0002,

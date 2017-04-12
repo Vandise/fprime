@@ -8,6 +8,8 @@
 
 %code requires {
 
+  #include "common/fprime.hpp"
+
   namespace FrontEnd {
     class Driver;
     class Scanner;
@@ -33,7 +35,6 @@
 
 #include "util/debug_new/debug_new.h"
 #include "frontend/headers/driver.hpp"
-#include "common/fprime.hpp"
 #include "ast/headers/ast.hpp"
 
 #undef yylex
@@ -53,19 +54,25 @@
 %token       <sval>      T_STRING
 %token       <ival>      T_INTEGER
 
+%token       <datatype>  T_TYPE_INT_32
+%token       <sval>      T_IDENTIFIER
+%token                   T_ASSIGN
+
 %token       <sval>      T_FATAL_ERROR
 %token                   T_NEWLINE
 %token                   PRGEND 0     "end of file"
 
 %union {
   int ival;
+  FPTYPE datatype;
   std::string *sval;
   AST::AbstractNode   *abstract_node;
   AST::Stack          *stack;
 }
 
 %type <stack>         Expressions
-%type <abstract_node> Expression Literal
+%type <abstract_node> Expression Literal Assignment
+%type <datatype>      DataTypes
 
 %%
 
@@ -89,12 +96,19 @@ Expressions:
 
 Expression:
     Literal
+  | Assignment
   | Errors
   ;
 
 Literal:
     T_STRING  { std::cout << "Found String: "  << *$1 << std::endl; $$ = fp_string_node($1); delete($1); }
   | T_INTEGER { std::cout << "Found Integer: " << $1 << std::endl;  $$ = fp_int32_node($1); }
+  ;
+
+DataTypes: T_TYPE_INT_32 { $$ = $1; }
+
+Assignment:
+    DataTypes T_IDENTIFIER T_ASSIGN Expression { $$ = fp_assignment_node($1, $2, $4); delete($2); }
   ;
 
 Errors:

@@ -4,5 +4,6 @@
 #include "stack.hpp"
 #include "abstractnode.hpp"
 #include "literalnode.hpp"
+#include "assignmentnode.hpp"
 
 #endif
