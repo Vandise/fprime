@@ -39,6 +39,13 @@ Generator::Frame::set_literal_value(std::string literal_name, int value)
   this->literal_reference[literal_name] = (this->literal_values.size() - 1);
 }
 
+/*
+  use this to calculate the literal offset for the local variable:
+    ie:
+        push    rbp
+        mov     rbp, rsp
+        mov     DWORD PTR [rbp-(offset + 1 * 4)], literal_value
+*/
 int
 Generator::Frame::get_literal_offset(std::string identifier)
 {
