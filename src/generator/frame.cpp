@@ -44,7 +44,7 @@ Generator::Frame::set_literal_value(std::string literal_name, int value)
     ie:
         push    rbp
         mov     rbp, rsp
-        mov     DWORD PTR [rbp-(offset + 1 * 4)], literal_value
+        mov     DWORD [rbp-(offset + 1 * 4)], literal_value
 */
 int
 Generator::Frame::get_literal_offset(std::string identifier)
@@ -83,13 +83,13 @@ Generator::Frame::get_instructions()
 void
 Generator::Frame::push_stack(int value)
 {
-  this->stack.push_back(value);
+  this->stack.push(value);
 }
 
 int
 Generator::Frame::pop_stack()
 {
-  int value = this->stack.back();
-  this->stack.pop_back();
+  int value = this->stack.top();
+  this->stack.pop();
   return value;
 }

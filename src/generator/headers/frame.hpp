@@ -4,6 +4,7 @@
 #include <map>
 #include <vector>
 #include <string>
+#include <stack>
 
 /*
   Frame Container
@@ -18,7 +19,7 @@ namespace Generator
       std::map<std::string, int> literal_reference;
       std::vector<std::string> instructions;
       std::string label;
-      std::vector<int> stack;
+      std::stack<int> stack;
 
     public:
       Frame(std::string label);

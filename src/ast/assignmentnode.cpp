@@ -24,6 +24,6 @@ AST::AssignmentNode::compile(Generator::CodeGenerator *cg)
     this->identifier,
     cg->context_manager->get_current_frame()->pop_stack()
   );
-  std::cout << "The assigned value is: " << cg->context_manager->get_current_frame()->pop_stack() << std::endl;
+  std::cout << "The assigned value is: " << cg->context_manager->get_current_frame()->get_literal_value(this->identifier) << std::endl;
   std::cout << "Assigning " << this->identifier << " type " << this->data_type << std::endl;
 }
