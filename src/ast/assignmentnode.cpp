@@ -24,9 +24,11 @@ AST::AssignmentNode::compile(Generator::CodeGenerator *cg)
     this->identifier,
     cg->context_manager->get_current_frame()->pop_stack()
   );
-  std::cout << "The assigned value is: " << cg->context_manager->get_current_frame()->get_literal_value(this->identifier) << std::endl;
-  std::cout << "Assigning " << this->identifier << " type " << this->data_type << std::endl;
 
   std::string displacement = std::to_string(cg->context_manager->get_current_frame()->get_literal_offset(this->identifier) + 1);
-  cg->emit_dword_indirect("rbp", displacement, 4, -1, false, true);
+  EMIT_2(
+    MOV,
+    cg->dword_indirect("rbp", displacement, 4, -1, false, true),
+    std::to_string(cg->context_manager->get_current_frame()->get_literal_value(this->identifier))
+  );
 }

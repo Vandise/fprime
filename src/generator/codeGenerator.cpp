@@ -1,6 +1,5 @@
 #include "headers/codeGenerator.hpp"
 
-
 #include <iostream>
 #include <string>
 
@@ -17,13 +16,35 @@ Generator::CodeGenerator::CodeGenerator()
 }
 
 void
-Generator::CodeGenerator::emit_instruction()
+Generator::CodeGenerator::push_buffer(std::string b)
 {
-  /* TODO */
+  this->line_buffer += b;
 }
 
 void
-Generator::CodeGenerator::emit_dword_indirect(std::string base_reg, std::string index, int scale, int disp, bool add_base_reg, bool add_displacement)
+Generator::CodeGenerator::push_line()
+{
+  this->line_buffer += "\n";
+  std::cout << this->line_buffer << std::endl;
+}
+
+std::string
+Generator::CodeGenerator::reg(FP_REGISTERS r)
+{
+  return this->asm_registers[r];
+}
+
+std::string
+Generator::CodeGenerator::instruction(FP_INSTRUCTIONS i)
+{
+  int padding = 8;
+  std::string instruction = this->instructions[i];
+  instruction.insert(instruction.size(), padding - instruction.size(), '\0');
+  return instruction;
+}
+
+std::string
+Generator::CodeGenerator::dword_indirect(std::string base_reg, std::string index, int scale, int disp, bool add_base_reg, bool add_displacement)
 {
   std::string line = "";
   line += "dword";
@@ -55,5 +76,6 @@ Generator::CodeGenerator::emit_dword_indirect(std::string base_reg, std::string 
       line += std::to_string(disp);
     }
   line += "]";
-  std::cout << line << std::endl;
+
+  return line;
 }
