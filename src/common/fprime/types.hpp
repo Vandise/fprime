@@ -18,10 +18,23 @@ class FPVALUE {
     FPTYPE type;
     int i_val;
     std::string s_val;
+
     FPVALUE(FPTYPE type, int value) {
       this->type = type;
       this->i_val = value;
     };
+
+    bool is_type(FPTYPE type) {
+      return this->type == type;
+    };
+
+    std::string emit() {
+      if (this->type == INT_32) {
+        return std::to_string(this->i_val);
+      }
+    };
 };
+
+
 
 #endif

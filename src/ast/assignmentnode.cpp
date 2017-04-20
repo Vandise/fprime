@@ -20,20 +20,24 @@ FPVALUE*
 AST::AssignmentNode::compile(Generator::CodeGenerator *cg)
 {
   FPVALUE* value = this->expression->compile(cg);
-  cg->context_manager->get_current_frame()->set_literal_value(
-    this->identifier,
-    value
-  );
-  std::string displacement = std::to_string(cg->context_manager->get_current_frame()->get_literal_offset(this->identifier) + 1);
+  if (value->is_type(this->data_type)) {
+    cg->context_manager->get_current_frame()->set_literal_value(
+      this->identifier,
+      value
+    );
+    std::string displacement = std::to_string(cg->context_manager->get_current_frame()->get_literal_offset(this->identifier) + 1);
 
-  EMIT_2(
-    MOV,
-    cg->dword_indirect("rbp", displacement, 4, -1, false, true),
-    std::to_string(cg->context_manager->get_current_frame()->get_literal_value(this->identifier)->i_val)
-  );
+    EMIT_2(
+      MOV,
+      cg->dword_indirect("rbp", displacement, 4, -1, false, true),
+      cg->context_manager->get_current_frame()->get_literal_value(this->identifier)->emit()
+    );
 
-  delete(value);
-  value = nullptr;
+    delete(value);
+    value = nullptr;
+  } else {
+    // TODO: Error Handler and Backtrace
+  }
 
   return nullptr;
 }

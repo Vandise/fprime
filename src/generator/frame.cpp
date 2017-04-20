@@ -31,6 +31,9 @@ Generator::Frame::get_literal_value(std::string identifier)
 
 /*
   Stores the offset of the identifier value in literal_values
+    TODO: register a section manager to manage data, ie when setting a string:
+      this->section_manager->add(string) -> initialized data offset
+        ID01
 */
 void
 Generator::Frame::set_literal_value(std::string literal_name, FPVALUE* value)
