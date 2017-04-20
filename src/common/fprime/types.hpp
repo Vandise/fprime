@@ -13,10 +13,15 @@ typedef enum {
   STRING   = 0x0006
 } FPTYPE;
 
-struct FPVALUE {
-  FPTYPE type;
-  int i_val;
-  std::string s_val;
+class FPVALUE {
+  public:
+    FPTYPE type;
+    int i_val;
+    std::string s_val;
+    FPVALUE(FPTYPE type, int value) {
+      this->type = type;
+      this->i_val = value;
+    };
 };
 
 #endif
