@@ -25,14 +25,14 @@ AST::LiteralNode::~LiteralNode()
   std::cout << "Destructor - Literal Node" << std::endl;
 }
 
-void
+FPVALUE*
 AST::LiteralNode::compile(Generator::CodeGenerator *cg)
 {
   std::string frame_label = cg->context_manager->get_current_frame()->get_label();
   switch(data_type) {
     case INT_32:
       std::cout << "Compiling Type: " << data_type << " with value: " << int_value << " in frame " << frame_label << std::endl;
-      cg->context_manager->get_current_frame()->push_stack(int_value);
+      //cg->context_manager->get_current_frame()->push_stack(int_value);
       break;
     case INT_64:
       break;
@@ -43,4 +43,5 @@ AST::LiteralNode::compile(Generator::CodeGenerator *cg)
       std::cout << "Compiling node" << std::endl;
       break;
   }
+  return nullptr;
 }

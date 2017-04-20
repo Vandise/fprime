@@ -19,7 +19,7 @@ Generator::Frame::get_label()
   return label;
 }
 
-int
+FPVALUE*
 Generator::Frame::get_literal_value(std::string identifier)
 {
   if (this->literal_reference.count(identifier)) {
@@ -33,7 +33,7 @@ Generator::Frame::get_literal_value(std::string identifier)
   Stores the offset of the identifier value in literal_values
 */
 void
-Generator::Frame::set_literal_value(std::string literal_name, int value)
+Generator::Frame::set_literal_value(std::string literal_name, FPVALUE* value)
 {
   this->literal_values.push_back(value);
   this->literal_reference[literal_name] = (this->literal_values.size() - 1);
@@ -55,7 +55,7 @@ Generator::Frame::get_literal_offset(std::string identifier)
   return -1;
 }
 
-std::vector<int>
+std::vector<FPVALUE*>
 Generator::Frame::get_literal_values()
 {
   return this->literal_values;
@@ -81,15 +81,15 @@ Generator::Frame::get_instructions()
 
 /* TODO: struct will be used for each datatype */
 void
-Generator::Frame::push_stack(int value)
+Generator::Frame::push_stack(FPVALUE* value)
 {
   this->stack.push(value);
 }
 
-int
+FPVALUE*
 Generator::Frame::pop_stack()
 {
-  int value = this->stack.top();
+  FPVALUE* value = this->stack.top();
   this->stack.pop();
   return value;
 }

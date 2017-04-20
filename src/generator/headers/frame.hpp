@@ -5,6 +5,7 @@
 #include <vector>
 #include <string>
 #include <stack>
+#include "common/fprime/types.hpp"
 
 /*
   Frame Container
@@ -15,25 +16,25 @@ namespace Generator
   class Frame
   {
     private:
-      std::vector<int> literal_values;
+      std::vector<FPVALUE*> literal_values;
       std::map<std::string, int> literal_reference;
       std::vector<std::string> instructions;
       std::string label;
-      std::stack<int> stack;
+      std::stack<FPVALUE*> stack;
 
     public:
       Frame(std::string label);
       virtual ~Frame();
       std::string get_label();
-      std::vector<int> get_literal_values();
+      std::vector<FPVALUE*> get_literal_values();
       std::map<std::string, int> get_literal_references();
       int get_literal_offset(std::string identifier);
-      int get_literal_value(std::string literal);
-      void set_literal_value(std::string literal_name, int value);
+      FPVALUE* get_literal_value(std::string literal);
+      void set_literal_value(std::string literal_name, FPVALUE* value);
       void push_instruction(std::string instruction);
       std::vector<std::string> get_instructions();
-      void push_stack(int value);
-      int  pop_stack();
+      void push_stack(FPVALUE* value);
+      FPVALUE*  pop_stack();
   };
 }
 

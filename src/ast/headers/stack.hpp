@@ -13,7 +13,7 @@ namespace AST {
     public:
       Stack(std::vector<AST::AbstractNode*> nodes);
       virtual ~Stack();
-      virtual void compile(Generator::CodeGenerator *cg);
+      virtual FPVALUE* compile(Generator::CodeGenerator *cg);
       int stack_size();
       void push_node(AST::AbstractNode *node);
       void push_nodes(std::vector<AST::AbstractNode*> nodes);

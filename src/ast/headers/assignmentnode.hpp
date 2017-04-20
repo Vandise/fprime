@@ -13,7 +13,7 @@ namespace AST {
     public:
       AssignmentNode(FPTYPE type, std::string identifier, AST::AbstractNode *expression);
       virtual ~AssignmentNode();
-      virtual void compile(Generator::CodeGenerator *cg);
+      virtual FPVALUE* compile(Generator::CodeGenerator *cg);
     private:
       FPTYPE      data_type;
       std::string identifier;

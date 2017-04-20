@@ -16,9 +16,10 @@ AST::AssignmentNode::~AssignmentNode()
   delete(this->expression);
 }
 
-void
+FPVALUE*
 AST::AssignmentNode::compile(Generator::CodeGenerator *cg)
 {
+  /*
   this->expression->compile(cg);
   cg->context_manager->get_current_frame()->set_literal_value(
     this->identifier,
@@ -31,4 +32,6 @@ AST::AssignmentNode::compile(Generator::CodeGenerator *cg)
     cg->dword_indirect("rbp", displacement, 4, -1, false, true),
     std::to_string(cg->context_manager->get_current_frame()->get_literal_value(this->identifier))
   );
+  */
+  return nullptr;
 }

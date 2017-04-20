@@ -1,6 +1,8 @@
 #ifndef __FPRIME_TYPES_HPP__
 #define __FPRIME_TYPES_HPP__ 1
 
+#include <string>
+
 typedef enum {
   VOID     = 0x0000,
   INT_32   = 0x0001,
@@ -10,5 +12,11 @@ typedef enum {
   DOUBLE   = 0x0005,
   STRING   = 0x0006
 } FPTYPE;
+
+struct FPVALUE {
+  FPTYPE type;
+  int i_val;
+  std::string s_val;
+};
 
 #endif

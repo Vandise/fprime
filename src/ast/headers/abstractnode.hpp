@@ -9,7 +9,7 @@ namespace AST {
   class AbstractNode
   {
     public:
-      virtual void compile(Generator::CodeGenerator *cg) = 0;
+      virtual FPVALUE* compile(Generator::CodeGenerator *cg) = 0;
       virtual ~AbstractNode(){ std::cout << "Desctrutor - AbstractNode" << std::endl; };
   };
 }

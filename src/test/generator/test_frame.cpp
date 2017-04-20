@@ -13,7 +13,7 @@ SCENARIO("Frame", "[Generator::Frame]")
       REQUIRE(f.get_label() == label);
     }
   }
-
+/*
   WHEN("A literal value is set")
   {
     THEN("It should map the value to the literals vector")
@@ -47,4 +47,5 @@ SCENARIO("Frame", "[Generator::Frame]")
       REQUIRE(f.get_instructions().back() == instruction);
     }
   }
+*/
 }

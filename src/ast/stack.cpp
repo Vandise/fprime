@@ -14,13 +14,14 @@ AST::Stack::~Stack()
   }
 }
 
-void
+FPVALUE*
 AST::Stack::compile(Generator::CodeGenerator *cg)
 {
   for (auto &n : nodes)
   {
     n->compile(cg);
   }
+  return nullptr;
 }
 
 int
